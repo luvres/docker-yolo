@@ -17,5 +17,7 @@ darknet detector test cfg/coco.data cfg/yolov3.cfg yolov3.weights data/dog.jpg"
 ```
 ### Build
 ```
+cat libs-cuda.tar.xz.part-a* > libs-cuda.tar.xz
+
 docker build izone/yolo:cuda-opencv .
 ```
