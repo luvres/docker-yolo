@@ -6,7 +6,7 @@ git clone https://github.com/AlexeyAB/darknet.git
 
 cd darknet/
 
-curl https://pjreddie.com/media/files/yolov3.weights -o yolov3.weights
+wget -c https://pjreddie.com/media/files/yolov3.weights -O yolov3.weights
 ```
 ```
 docker run --rm --runtime=nvidia --name Darknet \
