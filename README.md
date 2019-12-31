@@ -22,7 +22,7 @@ jupyter notebook \
 http://localhost:8888/
 ```
 
-
+### With Display
 ```
 docker run --rm --runtime=nvidia --name OpenCV \
 --net=host \
@@ -30,7 +30,7 @@ docker run --rm --runtime=nvidia --name OpenCV \
 --volume=/tmp/.X11-unix \
 --volume=$HOME/.Xauthority:/root/.Xauthority \
 --publish=8888:8888 \
---mount type=bind,src=$PWD,dst=/root/notebooks \
+--mount type=bind,src=$HOME/notebooks,dst=/root/notebooks \
 --workdir=/root \
 -ti izone/yolo:cuda-opencv-py3-jupyter-dev \
 jupyter notebook \

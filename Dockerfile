@@ -29,7 +29,7 @@ RUN \
   \
 	&& pip install --upgrade pip \
 	&& pip install \
-		tensorflow-gpu \
+		tensorflow-gpu==1.15 \
   \
 	&& mkdir /root/notebooks \
   \
@@ -86,9 +86,25 @@ RUN \
 	&& mv /usr/local/anaconda3/lib/libgio-2.0.so.0 \
 		/usr/local/anaconda3/lib/libgio-2.0.so.0.ORIG \
   \
-	&& cp /usr/lib/x86_64-linux-gnu/libfontconfig.so.1 /usr/local/anaconda3/lib/ \
-	&& cp /usr/lib/x86_64-linux-gnu/libpangoft2-1.0.so.0 /usr/local/anaconda3/lib/ \
-	&& cp /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0 /usr/local/anaconda3/lib/ \
+	&& ln -s /usr/lib/x86_64-linux-gnu/libfontconfig.so.1 /usr/local/anaconda3/lib/ \
+	&& ln -s /usr/lib/x86_64-linux-gnu/libpangoft2-1.0.so.0 /usr/local/anaconda3/lib/ \
+	&& ln -s /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0 /usr/local/anaconda3/lib/ \
+  \
+	&& ln -s /usr/local/cuda-10.2 /usr/local/nvidia \
+	&& ln -s /usr/local/cuda-10.2/targets/x86_64-linux/lib/libcudart.so \
+		/usr/local/cuda-10.2/targets/x86_64-linux/lib/libcudart.so.10.0 \
+	&& ln -s /usr/local/cuda-10.2/targets/x86_64-linux/lib/libcufft.so \
+		/usr/local/cuda-10.2/targets/x86_64-linux/lib/libcufft.so.10.0 \
+	&& ln -s /usr/local/cuda-10.2/targets/x86_64-linux/lib/libcusolver.so \
+		/usr/local/cuda-10.2/targets/x86_64-linux/lib/libcusolver.so.10.0 \
+	&& ln -s /usr/local/cuda-10.2/targets/x86_64-linux/lib/libcusparse.so \
+		/usr/local/cuda-10.2/targets/x86_64-linux/lib/libcusparse.so.10.0 \
+	&& ln -s /usr/local/cuda-10.2/targets/x86_64-linux/lib/libcurand.so \
+		/usr/local/cuda-10.2/targets/x86_64-linux/lib/libcurand.so.10.0 \
+	&& ln -s /usr/local/cuda-10.2/targets/x86_64-linux/lib/libcurand.so \
+		/usr/local/cuda-10.2/targets/x86_64-linux/lib/libcurand.so.10.0 \
+	&& ln -s /usr/lib/x86_64-linux-gnu/libcublas.so \
+		/usr/lib/x86_64-linux-gnu/libcublas.so.10.0 \
   \
 	&& cd && rm opencv-4.2.0 /usr/local/opencv_contrib -fR
 
