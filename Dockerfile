@@ -90,7 +90,6 @@ RUN \
 	&& ln -s /usr/lib/x86_64-linux-gnu/libpangoft2-1.0.so.0 /usr/local/anaconda3/lib/ \
 	&& ln -s /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0 /usr/local/anaconda3/lib/ \
   \
-	&& ln -s /usr/local/cuda-10.2 /usr/local/nvidia \
 	&& ln -s /usr/local/cuda-10.2/targets/x86_64-linux/lib/libcudart.so \
 		/usr/local/cuda-10.2/targets/x86_64-linux/lib/libcudart.so.10.0 \
 	&& ln -s /usr/local/cuda-10.2/targets/x86_64-linux/lib/libcufft.so \
@@ -101,10 +100,9 @@ RUN \
 		/usr/local/cuda-10.2/targets/x86_64-linux/lib/libcusparse.so.10.0 \
 	&& ln -s /usr/local/cuda-10.2/targets/x86_64-linux/lib/libcurand.so \
 		/usr/local/cuda-10.2/targets/x86_64-linux/lib/libcurand.so.10.0 \
-	&& ln -s /usr/local/cuda-10.2/targets/x86_64-linux/lib/libcurand.so \
-		/usr/local/cuda-10.2/targets/x86_64-linux/lib/libcurand.so.10.0 \
 	&& ln -s /usr/lib/x86_64-linux-gnu/libcublas.so \
 		/usr/lib/x86_64-linux-gnu/libcublas.so.10.0 \
+	&& ln -s /usr/local/cuda-10.2 /usr/local/nvidia \
   \
 	&& cd && rm opencv-4.2.0 /usr/local/opencv_contrib -fR
 
