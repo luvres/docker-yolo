@@ -77,7 +77,6 @@ python flow --model cfg/yolo.cfg --load bin/yolo.weights --demo videofile.mp4 --
 --env=DISPLAY=unix$DISPLAY \
 --volume=/tmp/.X11-unix \
 --volume=$HOME/.Xauthority:/root/.Xauthority \
---publish=8888:8888 \
 ```
 
 -----
