@@ -4,6 +4,20 @@ MAINTAINER Leonardo Loures <luvres@hotmail.com>
 ENV PATH=/usr/local/anaconda3/bin:$PATH
 
 RUN \
+  # Anaconda3
+	&& ANACONDA_VERSION="2019.10" \
+	&& curl -L https://repo.continuum.io/archive/Anaconda3-${ANACONDA_VERSION}-Linux-x86_64.sh \
+			-o Anaconda3-${ANACONDA_VERSION}-Linux-x86_64.sh \
+	&& /bin/bash Anaconda3-${ANACONDA_VERSION}-Linux-x86_64.sh -b -p /usr/local/anaconda3 \
+	&& ln -s /usr/local/anaconda3/ /opt/anaconda3 \
+	&& rm Anaconda3-${ANACONDA_VERSION}-Linux-x86_64.sh \
+  \
+	&& pip install --upgrade pip \
+	&& pip install \
+		tensorflow-gpu==1.15 \
+  \
+	&& mkdir /root/notebooks \
+  \
   # cmake
 	apt-get update && apt-get install -y \
 		curl cmake libssl-dev \
@@ -18,20 +32,6 @@ RUN \
 	&& apt-get autoremove -y \
 	&& ln -s /usr/local/bin/cmake /usr/bin/cmake \
 	&& cd && rm cmake-3.16.2 -fR \
-  \
-  # Anaconda3
-	&& ANACONDA_VERSION="2019.10" \
-	&& curl -L https://repo.continuum.io/archive/Anaconda3-${ANACONDA_VERSION}-Linux-x86_64.sh \
-			-o Anaconda3-${ANACONDA_VERSION}-Linux-x86_64.sh \
-	&& /bin/bash Anaconda3-${ANACONDA_VERSION}-Linux-x86_64.sh -b -p /usr/local/anaconda3 \
-	&& ln -s /usr/local/anaconda3/ /opt/anaconda3 \
-	&& rm Anaconda3-${ANACONDA_VERSION}-Linux-x86_64.sh \
-  \
-	&& pip install --upgrade pip \
-	&& pip install \
-		tensorflow-gpu==1.15 \
-  \
-	&& mkdir /root/notebooks \
   \
   # OpenCV
 	&& curl -L https://github.com/opencv/opencv_contrib/archive/4.2.0.tar.gz \
