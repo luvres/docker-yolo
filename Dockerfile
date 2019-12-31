@@ -16,8 +16,6 @@ RUN \
 	&& rm Anaconda3-${ANACONDA_VERSION}-Linux-x86_64.sh \
   \
 	&& pip install --upgrade pip \
-	&& pip install \
-		tensorflow-gpu==1.15 \
   \
 	&& mkdir /root/notebooks \
   \
