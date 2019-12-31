@@ -5,7 +5,7 @@ ENV PATH=/usr/local/anaconda3/bin:$PATH
 
 RUN \
   # Anaconda3
-	&& ANACONDA_VERSION="2019.10" \
+	ANACONDA_VERSION="2019.10" \
 	&& curl -L https://repo.continuum.io/archive/Anaconda3-${ANACONDA_VERSION}-Linux-x86_64.sh \
 			-o Anaconda3-${ANACONDA_VERSION}-Linux-x86_64.sh \
 	&& /bin/bash Anaconda3-${ANACONDA_VERSION}-Linux-x86_64.sh -b -p /usr/local/anaconda3 \
@@ -19,7 +19,7 @@ RUN \
 	&& mkdir /root/notebooks \
   \
   # cmake
-	apt-get update && apt-get install -y \
+	&& apt-get update && apt-get install -y \
 		curl cmake libssl-dev \
   \
 	&& curl -L https://github.com/Kitware/CMake/releases/download/v3.16.2/cmake-3.16.2.tar.gz \
