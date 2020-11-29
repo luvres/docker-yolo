@@ -34,6 +34,7 @@ RUN \
   \
   # OpenCV
   && OPENCV_VERSION="4.2.0" \
+  && PYTHON_VERSION="3.8" \
 	&& curl -L https://github.com/opencv/opencv_contrib/archive/${OPENCV_VERSION}.tar.gz \
 			| tar xzf - -C /usr/local \
 	&& mv /usr/local/opencv_contrib* /usr/local/opencv_contrib \
@@ -67,17 +68,17 @@ RUN \
 		-D CUDA_ARCH_BIN='6.0 6.1 6.2 7.0 7.2 7.5' \
 		-D CUDA_ARCH_PTX="" \
 		-D PYTHON3_EXECUTABLE=/usr/local/anaconda3/bin/python \
-		-D PYTHON3_LIBRARY=/usr/local/anaconda3/lib/libpython3.7m.so \
+		-D PYTHON3_LIBRARY=/usr/local/anaconda3/lib/libpython${PYTHON_VERSION}.so \
 		-D PYTHON3_INCLUDE_DIRS=/usr/local/anaconda3/include \
-		-D PYTHON3_NUMPY_INCLUDE_DIRS=/usr/local/anaconda3/lib/python3.7/site-packages/numpy/core/include \
+		-D PYTHON3_NUMPY_INCLUDE_DIRS=/usr/local/anaconda3/lib/python${PYTHON_VERSION}/site-packages/numpy/core/include \
 	.. \
   \
 	&& make -j$(nproc) \
 	&& make install \
   \
 	&& ln -s \
-		/usr/local/lib/python3.7/site-packages/cv2/python-3.7/cv2.cpython-37m-x86_64-linux-gnu.so \
-		/usr/local/anaconda3/lib/python3.7/site-packages/cv2.so \
+		/usr/local/lib/python${PYTHON_VERSION}/site-packages/cv2/python-${PYTHON_VERSION}/cv2.cpython-37m-x86_64-linux-gnu.so \
+		/usr/local/anaconda3/lib/python${PYTHON_VERSION}/site-packages/cv2.so \
   \
 	&& mv /usr/local/anaconda3/lib/libfontconfig.so.1 \
 		/usr/local/anaconda3/lib/libfontconfig.so.1.ORIG \
