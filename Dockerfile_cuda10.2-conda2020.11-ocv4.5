@@ -1,0 +1,114 @@
+FROM nvidia/cuda:10.2-cudnn7-devel
+MAINTAINER Leonardo Loures <luvres@hotmail.com>
+
+ENV PATH=/usr/local/anaconda3/bin:$PATH
+
+RUN \
+	apt-get update && apt-get install -y \
+		curl cmake libssl-dev \
+  \
+  # Anaconda3
+	&& ANACONDA_VERSION="2020.11" \
+	&& curl -L https://repo.continuum.io/archive/Anaconda3-${ANACONDA_VERSION}-Linux-x86_64.sh \
+			-o Anaconda3-${ANACONDA_VERSION}-Linux-x86_64.sh \
+	&& /bin/bash Anaconda3-${ANACONDA_VERSION}-Linux-x86_64.sh -b -p /usr/local/anaconda3 \
+	&& ln -s /usr/local/anaconda3/ /opt/anaconda3 \
+	&& rm Anaconda3-${ANACONDA_VERSION}-Linux-x86_64.sh \
+  \
+	&& pip install --upgrade pip \
+  \
+	&& mkdir /root/notebooks \
+  \
+  # cmake
+  && CMAKE_VERSION="3.19.1" \
+	&& curl -L https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}.tar.gz \
+			| tar zxf - -C . \
+	&& cd cmake-${CMAKE_VERSION} \
+	&& cmake . \
+	&& make -j$(nproc) \
+	&& make install \
+	&& apt-get remove -y cmake \
+	&& apt-get autoremove -y \
+	&& ln -s /usr/local/bin/cmake /usr/bin/cmake \
+	&& cd && rm cmake-${CMAKE_VERSION} -fR \
+  \
+  # OpenCV
+  && OPENCV_VERSION="4.5.0" \
+  && PYTHON_VERSION="3.8" \
+	&& curl -L https://github.com/opencv/opencv_contrib/archive/${OPENCV_VERSION}.tar.gz \
+			| tar xzf - -C /usr/local \
+	&& mv /usr/local/opencv_contrib* /usr/local/opencv_contrib \
+  \
+	&& curl -L https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.tar.gz \
+			| tar xzf - -C . && cd opencv-${OPENCV_VERSION}/ \
+	&& mkdir build && cd build \
+  \
+	&& apt-get install -y \
+		libgflags-dev \
+		libeigen3-dev \
+		libavresample-dev \
+		libgstreamer-plugins-base1.0-dev \
+		gstreamer1.0-plugins-base-apps \
+		libdc1394-22-dev \
+		libgtk2.0-dev \
+		libgtk-3-dev \
+		libtesseract-dev \
+		libavcodec-dev \
+		libavformat-dev \
+		libswscale-dev \
+  \
+	&& cmake \
+		-D CMAKE_BUILD_TYPE=Release \
+		-D CMAKE_INSTALL_PREFIX=/usr/local \
+		-D OPENCV_EXTRA_MODULES_PATH=/usr/local/opencv_contrib/modules \
+		-D BUILD_opencv_python3=ON \
+		-D WITH_FFMPEG=ON \
+		-D WITH_CUDA=ON \
+		-D CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-10.2/ \
+		-D CUDA_ARCH_BIN='6.0 6.1 6.2 7.0 7.2 7.5' \
+		-D CUDA_ARCH_PTX="" \
+		-D PYTHON3_EXECUTABLE=/usr/local/anaconda3/bin/python \
+		-D PYTHON3_LIBRARY=/usr/local/anaconda3/lib/libpython${PYTHON_VERSION}.so \
+		-D PYTHON3_INCLUDE_DIRS=/usr/local/anaconda3/include \
+		-D PYTHON3_NUMPY_INCLUDE_DIRS=/usr/local/anaconda3/lib/python${PYTHON_VERSION}/site-packages/numpy/core/include \
+	.. \
+  \
+	&& make -j$(nproc) \
+	&& make install \
+  \
+	&& ln -s \
+		/usr/local/lib/python${PYTHON_VERSION}/site-packages/cv2/python-${PYTHON_VERSION}/cv2.cpython-37m-x86_64-linux-gnu.so \
+		/usr/local/anaconda3/lib/python${PYTHON_VERSION}/site-packages/cv2.so \
+  \
+	&& mv /usr/local/anaconda3/lib/libfontconfig.so.1 \
+		/usr/local/anaconda3/lib/libfontconfig.so.1.ORIG \
+	&& mv /usr/local/anaconda3/lib/libpangoft2-1.0.so.0 \
+		/usr/local/anaconda3/lib/libpangoft2-1.0.so.0.ORIG \
+	&& mv /usr/local/anaconda3/lib/libgio-2.0.so.0 \
+		/usr/local/anaconda3/lib/libgio-2.0.so.0.ORIG \
+  \
+	&& ln -s /usr/lib/x86_64-linux-gnu/libfontconfig.so.1 /usr/local/anaconda3/lib/ \
+	&& ln -s /usr/lib/x86_64-linux-gnu/libpangoft2-1.0.so.0 /usr/local/anaconda3/lib/ \
+	&& ln -s /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0 /usr/local/anaconda3/lib/ \
+  \
+	&& ln -s /usr/local/cuda-10.2/targets/x86_64-linux/lib/libcudart.so \
+		/usr/local/cuda-10.2/targets/x86_64-linux/lib/libcudart.so.10.0 \
+	&& ln -s /usr/local/cuda-10.2/targets/x86_64-linux/lib/libcufft.so \
+		/usr/local/cuda-10.2/targets/x86_64-linux/lib/libcufft.so.10.0 \
+	&& ln -s /usr/local/cuda-10.2/targets/x86_64-linux/lib/libcusolver.so \
+		/usr/local/cuda-10.2/targets/x86_64-linux/lib/libcusolver.so.10.0 \
+	&& ln -s /usr/local/cuda-10.2/targets/x86_64-linux/lib/libcusparse.so \
+		/usr/local/cuda-10.2/targets/x86_64-linux/lib/libcusparse.so.10.0 \
+	&& ln -s /usr/local/cuda-10.2/targets/x86_64-linux/lib/libcurand.so \
+		/usr/local/cuda-10.2/targets/x86_64-linux/lib/libcurand.so.10.0 \
+	&& ln -s /usr/lib/x86_64-linux-gnu/libcublas.so \
+		/usr/lib/x86_64-linux-gnu/libcublas.so.10.0 \
+	&& ln -s /usr/local/cuda-10.2 /usr/local/nvidia \
+  \
+	&& cd && rm opencv-4.2.0 /usr/local/opencv_contrib -fR
+
+
+WORKDIR /root/notebooks
+
+EXPOSE 8888
+
