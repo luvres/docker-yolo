@@ -83,4 +83,8 @@ python flow --model cfg/yolo.cfg --load bin/yolo.weights --demo videofile.mp4 --
 ### Build
 ```
 docker build -t izone/yolo:cuda-opencv-py3-jupyter-dev .
+
+docker build -t izone/yolo:cuda10.2-conda2019.10-ocv4.2 -f Dockerfile_cuda10.2-conda2019.10-ocv4.2 .
+
+
 ```
