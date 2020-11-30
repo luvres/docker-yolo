@@ -88,7 +88,6 @@ docker build -t izone/yolo:cuda10.2-conda2019.10-ocv4.2 -f Dockerfile_cuda10.2-c
 
 docker build -t izone/yolo:cuda10.2-conda2019.10-ocv4.2 -f Dockerfile_cuda10.2-conda2020.11-ocv4.2 .
 
-
 docker build -t izone/yolo:cuda10.2-conda2019.10-ocv4.5 -f Dockerfile_cuda10.2-conda2020.11-ocv4.5 .
 
 ```
